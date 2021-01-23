@@ -11,9 +11,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {
+      "images": ["src/images"],
       "*": ["node_modules/*"]
     },
-    "jsx": "react"
+    "typeRoots": [
+      "src/customTypings",
+      "node_modules/@types"
+    ],
+    "jsx": "react",
   },
   "include": [
     "src/**/*"

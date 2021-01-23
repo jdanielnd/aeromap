@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { useEffect, useState } from 'react';
 import { ipcRenderer } from "electron";
 
-import { iconAero, iconCircle } from './Icon';
+import { iconCircle } from './Icon';
 
 import 'leaflet/dist/leaflet.css';
 

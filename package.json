@@ -1,15 +1,16 @@
 {
   "name": "aeromap",
-  "productName": "aeromap",
+  "productName": "Aeromap",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Map for Aerowinx PSX",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "make-mac": "npx @electron-forge/cli make --platform darwin"
   },
   "keywords": [],
   "author": {
@@ -19,7 +20,9 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "./src/assets/icons/mac/icon"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -68,6 +71,7 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.54",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
+    "@electron-forge/plugin-electronegativity": "^6.0.0-beta.54",
     "@electron-forge/plugin-webpack": "6.0.0-beta.54",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "@types/leaflet": "^1.5.21",
@@ -76,6 +80,7 @@
     "@typescript-eslint/parser": "^4.0.1",
     "css-loader": "^4.2.1",
     "electron": "11.2.0",
+    "electron-icon-builder": "^2.0.1",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "^2.20.0",
     "file-loader": "^6.2.0",
@@ -83,7 +88,8 @@
     "node-loader": "^1.0.1",
     "style-loader": "^1.2.1",
     "ts-loader": "^8.0.2",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "url-loader": "^4.1.1"
   },
   "dependencies": {
     "@types/react": "^17.0.0",
