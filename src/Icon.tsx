@@ -9,7 +9,7 @@ const iconCircle = new L.Icon({
   shadowUrl: null,
   shadowSize: null,
   shadowAnchor: null,
-  iconSize: new L.Point(25, 25),
+  iconSize: new L.Point(15, 15),
 });
 
 export { iconCircle };

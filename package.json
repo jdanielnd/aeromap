@@ -10,7 +10,8 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts .",
-    "make-mac": "npx @electron-forge/cli make --platform darwin"
+    "make-mac": "npx @electron-forge/cli make --platform darwin",
+    "make-win": "npx electron-packager . --platform=win32"
   },
   "keywords": [],
   "author": {
