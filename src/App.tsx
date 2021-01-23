@@ -4,6 +4,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { useEffect, useState } from 'react';
 import { ipcRenderer } from "electron";
 
+import Heading from './Heading'
+
 import { iconCircle } from './Icon';
 
 import 'leaflet/dist/leaflet.css';
@@ -11,7 +13,7 @@ import 'leaflet/dist/leaflet.css';
 const App: React.FC = () => { 
 
   function LocationMarker() {
-    const [position, setPosition] = useState({ lat: 10, lng: 10 })
+    const [position, setPosition] = useState({ lat: 10, lng: 10, hdg: 0 })
     const map = useMap();
 
     useEffect(() => {
@@ -28,9 +30,12 @@ const App: React.FC = () => {
     })
 
     return position === null ? null : (
-      <Marker position={position} icon={iconCircle}>
-        <Popup>You are here</Popup>
-      </Marker>
+      <div>
+        <Marker position={position} icon={iconCircle}>
+          <Popup>You are here</Popup>
+        </Marker>
+        <Heading center={position} angle={position.hdg} />
+      </div>
     )
   }
 

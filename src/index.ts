@@ -52,29 +52,36 @@ app.on('activate', () => {
 let position = { lat: 0, hdg: 0, lng: 0 };
 
 var client = new net.Socket();
-client.connect(10747, '127.0.0.1', function() {
-  console.log('Connected');
-});
 
-client.on('data', function(data) {
-  if(/^Qs121/.test(data.toString())) {
-    let str = ''+data
-    let dataSplit = str.split(";");
-    let hdg = +dataSplit[2] * 180 / Math.PI
-    let lat = +dataSplit[5] * 180 / Math.PI
-    let lon = +dataSplit[6] * 180 / Math.PI
-    if(!isNaN(hdg) && !isNaN(lat) && !isNaN(lon)) {
-      position = {
-        hdg: hdg,
-        lat: lat,
-        lng: lon
+try {
+  client.connect(10747, '127.0.0.1', function() {
+    console.log('Connected');
+  });
+
+  client.on('data', function(data) {
+    if(/^Qs121/.test(data.toString())) {
+      let str = ''+data
+      let dataSplit = str.split(";");
+      let hdg = +dataSplit[2] * 180 / Math.PI
+      let lat = +dataSplit[5] * 180 / Math.PI
+      let lon = +dataSplit[6] * 180 / Math.PI
+      if(!isNaN(hdg) && !isNaN(lat) && !isNaN(lon)) {
+        position = {
+          hdg: hdg,
+          lat: lat,
+          lng: lon
+        }
       }
     }
-  }
-});
+  });
+  
+  const { ipcMain } = require('electron')
+  ipcMain.on('position', (event: { reply: (arg0: any, arg1: any) => void; }, arg: any) => {
+    console.log(arg) // prints "ping"
+    event.reply('position-reply', { lat: position.lat, lng: position.lng, hdg: position.hdg })
+  })
+} catch {
+  console.log('Could not connect')
+}
 
-const { ipcMain } = require('electron')
-ipcMain.on('position', (event: { reply: (arg0: any, arg1: any) => void; }, arg: any) => {
-  console.log(arg) // prints "ping"
-  event.reply('position-reply', { lat: position.lat, lng: position.lng })
-})
+
