@@ -11,7 +11,7 @@
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts .",
     "make-mac": "npx @electron-forge/cli make --platform darwin",
-    "make-win": "npx electron-packager . --platform=win32"
+    "make-win": "npx electron-packager . --overwrite --platform=win32 --icon=src/assets/icons/win/icon.ico --out=out"
   },
   "keywords": [],
   "author": {
