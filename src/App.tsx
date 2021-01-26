@@ -4,11 +4,11 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { useEffect, useState } from 'react';
 import { ipcRenderer } from "electron";
 
-import Heading from './Heading'
-
-import { iconCircle } from './Icon';
+import { Heading } from './Heading'
 
 import 'leaflet/dist/leaflet.css';
+import ReactDOMServer from 'react-dom/server';
+import L from 'leaflet';
 
 const App: React.FC = () => { 
 
@@ -31,10 +31,13 @@ const App: React.FC = () => {
 
     return position === null ? null : (
       <div>
-        <Marker position={position} icon={iconCircle}>
+        <Marker position={position} icon={L.divIcon({
+          className: "custom icon",
+          html: ReactDOMServer.renderToString( <Heading heading={position.hdg} /> ),
+          iconSize: new L.Point(45, 45),
+        })}>
           <Popup>You are here</Popup>
         </Marker>
-        <Heading center={position} angle={position.hdg} />
       </div>
     )
   }
