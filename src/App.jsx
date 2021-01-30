@@ -2,49 +2,37 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {HashRouter,Link,Route,Switch} from "react-router-dom";
 
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
+import Map from './components/map/index.jsx'
 
 function Users() {
-  return <h2>Users</h2>;
+  return <h2>Settings</h2>;
 }
 
 function App(props) {
   return (
     <HashRouter>
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
-
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
+          <Route path="/settings">
             <Users />
           </Route>
           <Route path="/">
-            <Home />
+            <Map />
           </Route>
         </Switch>
+
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Map</Link>
+            </li>
+            <li>
+              <Link to="/settings">Settings</Link>
+            </li>
+          </ul>
+        </nav>
       </div>
     </HashRouter>
   );

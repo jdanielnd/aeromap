@@ -27,4 +27,6 @@
  */
 
 import './index.css';
+import 'leaflet/dist/leaflet.css';
+
 import './App.jsx';

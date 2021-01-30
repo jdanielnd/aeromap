@@ -77,12 +77,15 @@
     "electron": "11.2.1",
     "node-loader": "^1.0.1",
     "react-hot-loader": "^4.13.0",
-    "style-loader": "^1.2.1"
+    "style-loader": "^1.2.1",
+    "url-loader": "^4.1.1"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "leaflet": "^1.7.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-leaflet": "^3.1.0",
     "react-router-dom": "^5.2.0"
   }
 }
