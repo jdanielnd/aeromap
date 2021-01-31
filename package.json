@@ -1,15 +1,22 @@
 {
-  "name": "aeromap",
-  "productName": "aeromap",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "Aeromap",
+  "productName": "Aeromap",
+  "version": "0.1.0",
+  "description": "Map for Aerowinx PSX",
+  "homepage": "https://aeromap.io",
+  "repository": {
+    "url": "https://github.com/jdanielnd/aeromap"
+  },
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "keywords": [],
   "author": {
@@ -17,6 +24,12 @@
     "email": "jdanielnd@gmail.com"
   },
   "license": "MIT",
+  "build": {
+    "appId": "io.aeromap.app",
+    "mac": {
+      "category": "public.app-category.games"
+    }
+  },
   "config": {
     "forge": {
       "packagerConfig": {},
@@ -75,6 +88,7 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^4.2.1",
     "electron": "11.2.1",
+    "electron-builder": "^22.9.1",
     "node-loader": "^1.0.1",
     "style-loader": "^1.2.1",
     "url-loader": "^4.1.1"
