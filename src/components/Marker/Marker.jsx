@@ -6,7 +6,7 @@ import L from 'leaflet';
 import { Marker as LeafletMarker, Popup, useMap } from 'react-leaflet'
 import { ipcRenderer } from "electron";
 
-import Heading from '../heading/index.jsx';
+import Heading from '../Heading';
 
 function Marker(props) {
   const [position, setPosition] = useState({ lat: 10, lng: 10, hdg: 0 })

@@ -5,7 +5,7 @@ import {HashRouter, Link, Route, Switch} from "react-router-dom";
 
 import { ipcRenderer } from "electron";
 
-import Map from './components/map/index.jsx'
+import Map from './components/Map'
 
 function Settings(props) {
   return <h2>Settings: {props.connected ? "Conectado" : "Desconectado"}</h2>;

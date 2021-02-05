@@ -1,10 +1,10 @@
 import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'
-import Marker from '../marker/index.jsx'
+import Marker from '../Marker'
 
 import 'leaflet/dist/leaflet.css';
 
-function Map(props) {
+export default function Map(props) {
   return (
     <MapContainer
       center={{ lat: 51.505, lng: -0.09 }}
@@ -19,4 +19,3 @@ function Map(props) {
     </MapContainer>
   );
 }
- export default Map;
