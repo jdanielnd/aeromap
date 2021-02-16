@@ -8,7 +8,7 @@ import { ipcRenderer } from "electron";
 
 import Heading from '../Heading';
 
-function Marker(props) {
+export default function Marker(props) {
   const [position, setPosition] = useState({ lat: 10, lng: 10, hdg: 0 })
   const map = useMap();
 
@@ -17,7 +17,7 @@ function Marker(props) {
   useEffect(() => {
     const interval = setInterval(() => {
       ipcRenderer.send('position')
-    }, 500);
+    }, 250);
     return () => clearInterval(interval);
   }, []);
   
@@ -43,5 +43,3 @@ function Marker(props) {
     </LeafletMarker>
   )
 }
-
-export default Marker;

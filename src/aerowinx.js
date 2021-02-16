@@ -2,10 +2,10 @@ const net = require('net');
 const { ipcMain } = require('electron')
 
 let position = { lat: 0, hdg: 0, lng: 0 };
+let host = '127.0.0.1';
 
 // Create socket
 let port = 10747;
-let host = '127.0.0.1';
 let timeout = 1000;
 let retrying = false;
 let connected = false;
@@ -53,6 +53,14 @@ socket.on('close',   closeEventHandler);
 // Connect
 console.log('Connecting to ' + host + ':' + port + '...');
 makeConnection();
+
+ipcMain.on('ip-address', (event, arg) => {
+  console.log(arg)
+  if(host != arg) {
+    host = arg
+    socket.destroy();
+  }
+})
 
 socket.on('data', function(data) {
   if(/^Qs121/.test(data.toString())) {

@@ -6,17 +6,13 @@ import {HashRouter, Link, Route, Switch} from "react-router-dom";
 import { ipcRenderer } from "electron";
 
 import Map from './components/Map'
-
-function Settings(props) {
-  return <h2>Settings: {props.connected ? "Conectado" : "Desconectado"}</h2>;
-}
+import Settings from './components/Settings'
 
 function App(props) {
 
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
-    // Atualiza o titulo do documento usando a API do browser
     const interval = setInterval(() => {
       ipcRenderer.send('connection')
     }, 1000);
