@@ -1,15 +1,15 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useContext } from 'react';
+import { AerowinxContext } from '../../contexts/AerowinxContext'
 import { ipcRenderer } from "electron";
 
 export default function Settings(props) {
 
-  const [address, setAddress] = useState('127.0.0.1');
+  const [state, dispatch] = useContext(AerowinxContext);
 
   useEffect(() => {
-    console.log(address)
-    ipcRenderer.send('ip-address', address)
-  }, [address]);
+    ipcRenderer.send('ip-address', state.address)
+  }, [state.address]);
 
   return (
     <div className="content">
@@ -19,7 +19,7 @@ export default function Settings(props) {
       </div>
       <div className="row">
         <strong>IP address:</strong>
-        <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+        <input type="text" value={state.address} onChange={(e) => dispatch({type: 'SET_ADDRESS', payload: e.target.value})} />
       </div>
     </div>
   )

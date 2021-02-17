@@ -7,6 +7,7 @@ import { ipcRenderer } from "electron";
 
 import Map from './components/Map'
 import Settings from './components/Settings'
+import AerowinxStore from './contexts/AerowinxContext';
 
 function App(props) {
 
@@ -24,35 +25,37 @@ function App(props) {
   })
 
   return (
-    <HashRouter>
-      <div>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route exact path="/settings">
-            <Settings connected={connected} />
-          </Route>
-          <Route exact path="/" render={() => {
-            return (
-              connected ?
-              <Map /> :
-              <Settings />
-            )
-          }}/>
-        </Switch>
+    <AerowinxStore>
+      <HashRouter>
+        <div>
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route exact path="/settings">
+              <Settings connected={connected} />
+            </Route>
+            <Route exact path="/" render={() => {
+              return (
+                connected ?
+                <Map /> :
+                <Settings />
+              )
+            }}/>
+          </Switch>
 
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Map</Link>
-            </li>
-            <li>
-              <Link to="/settings">Settings</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </HashRouter>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Map</Link>
+              </li>
+              <li>
+                <Link to="/settings">Settings</Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </HashRouter>
+    </AerowinxStore>
   );
 }
 
