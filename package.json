@@ -16,7 +16,7 @@
     "lint": "echo \"No linting configured\"",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder -mwl"
   },
   "keywords": [],
   "author": {
