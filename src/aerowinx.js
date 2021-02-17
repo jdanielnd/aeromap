@@ -55,7 +55,6 @@ console.log('Connecting to ' + host + ':' + port + '...');
 makeConnection();
 
 ipcMain.on('ip-address', (event, arg) => {
-  console.log(arg)
   if(host != arg) {
     host = arg
     socket.destroy();

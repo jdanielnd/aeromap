@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { useEffect, useState } from 'react';
+import { useEffect, useContext } from 'react';
+import { AerowinxContext } from '../../contexts/AerowinxContext'
 
 import L from 'leaflet';
 import { Marker as LeafletMarker, Popup, useMap } from 'react-leaflet'
@@ -9,10 +10,11 @@ import { ipcRenderer } from "electron";
 import Heading from '../Heading';
 
 export default function Marker(props) {
-  const [position, setPosition] = useState({ lat: 10, lng: 10, hdg: 0 })
+  const [state, dispatch] = useContext(AerowinxContext);
+
   const map = useMap();
 
-  map.setView(position, map.getZoom())
+  map.setView(state.position, map.getZoom())
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,24 +24,23 @@ export default function Marker(props) {
   }, []);
   
   ipcRenderer.once('position-reply', (event, arg) => {
-    setPosition(arg)
+    dispatch({type: 'SET_POSITION', payload: arg});
     map.setView(arg, map.getZoom())
   })
 
   return (
     <LeafletMarker
-      position={position}
+      position={state.position}
       icon={
         L.divIcon({
           className: "custom icon",
           html: ReactDOMServer.renderToString(
-            <Heading heading={position.hdg} /> 
+            <Heading heading={state.position.hdg} /> 
           ),
           iconSize: new L.Point(45, 45),
         })
       }
     >
-      <Popup>You are here</Popup>
     </LeafletMarker>
   )
 }

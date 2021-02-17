@@ -1,13 +1,19 @@
 import React from 'react';
+import { useContext } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'
+
 import Marker from '../Marker'
+import { AerowinxContext } from '../../contexts/AerowinxContext'
 
 import 'leaflet/dist/leaflet.css';
 
 export default function Map(props) {
+
+  const [state, dispatch] = useContext(AerowinxContext);
+
   return (
     <MapContainer
-      center={{ lat: 51.505, lng: -0.09 }}
+      center={state.position}
       zoom={13}
       scrollWheelZoom={false}>
       
