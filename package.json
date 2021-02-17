@@ -16,7 +16,8 @@
     "lint": "echo \"No linting configured\"",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -mwl"
+    "dist": "electron-builder -mwl",
+    "build": "electron-forge make",
   },
   "keywords": [],
   "author": {
