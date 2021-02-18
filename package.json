@@ -8,7 +8,9 @@
   "private": false,
   "scripts": {
     "start": "electron-webpack dev",
-    "build": "electron-webpack"
+    "build": "electron-webpack",
+    "postinstall": "electron-builder install-app-deps",
+    "make": "electron-builder -mw"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.12.13",
@@ -37,7 +39,6 @@
       "template": "app/renderer/index.html",
       "webpackConfig": "webpack.renderer.additions.js"
     },
-    "commonSourceDirectory": "app/common",
-    "staticSourceDirectory": "app/static"
+    "commonSourceDirectory": "app/common"
   }
 }
