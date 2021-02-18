@@ -1,0 +1,44 @@
+{
+  "appId": "io.aeromap.app",
+  "productName": "Aeromap",
+  "copyright": "João Duarte",
+  "directories": {
+      "output": "out",
+      "buildResources": "build-res"
+  },
+  "files": [
+      "package.json",
+      "app/**/*",
+      "node_modules"
+  ],
+  "dmg": {
+      "background": null,
+      "backgroundColor": "#ffffff",
+      "window": {
+          "width": "400",
+          "height": "300"
+      },
+      "contents": [
+          {
+              "x": 100,
+              "y": 100
+          },
+          {
+              "x": 300,
+              "y": 100,
+              "type": "link",
+              "path": "/Applications"
+          }
+      ]
+  },
+  "nsis": {
+    "oneClick": false
+  },
+  "mac": {
+      "target": "dmg",
+      "category": "public.app-category.games"
+    },
+  "win": {
+      "target": "nsis"
+  }
+}
