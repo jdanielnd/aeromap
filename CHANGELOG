@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  
 ### Fixed
+
+## [0.1.2] - 2021-02-18
+   
+### Added
+ 
+### Changed
+ 
+### Fixed
+ 
+- Fixed regex to be agnostic of newline or carriage return. This fixes a bug that position couldn't be fetched when Aerowinx runs on Windows.
  
 ## [0.1.1] - 2021-02-18
    
