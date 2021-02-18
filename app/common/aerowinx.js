@@ -52,7 +52,7 @@ export const connectAerowinx = () => {
   socket.on('close',   closeEventHandler);
 
   socket.on('data', function(data) {
-    const Qs121 = /(Qs121=.+)\n/
+    const Qs121 = /(Qs121.+)/
 
     if(Qs121.test(data.toString())) {
       let str = data.toString().match(Qs121)[0]

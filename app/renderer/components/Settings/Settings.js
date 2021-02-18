@@ -15,6 +15,9 @@ export default function Settings(props) {
     <div className="content">
       <h2>Settings</h2>
       <div className="row">
+        <strong>Version:</strong> { require('../../../../package.json').version }
+      </div>
+      <div className="row">
         <strong>Status:</strong> {props.connected ? "Connected" : "Disconnected"}
       </div>
       <div className="row">
