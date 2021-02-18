@@ -1,106 +1,43 @@
 {
   "name": "aeromap",
-  "productName": "Aeromap",
   "version": "0.1.0",
   "description": "Map for Aerowinx PSX",
-  "homepage": "https://aeromap.io",
-  "repository": {
-    "url": "https://github.com/jdanielnd/aeromap"
-  },
-  "main": ".webpack/main",
-  "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\"",
-    "postinstall": "electron-builder install-app-deps",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder -mwl",
-    "build": "electron-forge make"
-  },
-  "keywords": [],
-  "author": {
-    "name": "João Duarte",
-    "email": "jdanielnd@gmail.com"
-  },
+  "repository": "git@github.com:jdanielnd/aeromap.git",
+  "author": "João Duarte <jdanielnd@gmail.com>",
   "license": "MIT",
-  "build": {
-    "appId": "io.aeromap.app",
-    "mac": {
-      "category": "public.app-category.games"
-    }
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "aeromap"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ],
-      "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
-            "mainConfig": "./webpack.main.config.js",
-            "renderer": {
-              "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./src/index.html",
-                  "js": "./src/renderer.js",
-                  "name": "main_window"
-                }
-              ]
-            }
-          }
-        ]
-      ]
-    }
+  "private": false,
+  "scripts": {
+    "start": "electron-webpack dev",
+    "build": "electron-webpack"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-react": "^7.12.10",
-    "@electron-forge/cli": "^6.0.0-beta.54",
-    "@electron-forge/maker-deb": "^6.0.0-beta.54",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
-    "@electron-forge/maker-zip": "^6.0.0-beta.54",
-    "@electron-forge/plugin-webpack": "6.0.0-beta.54",
-    "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
-    "babel-loader": "^8.2.2",
-    "css-loader": "^4.2.1",
-    "electron": "11.2.1",
+    "@babel/preset-react": "^7.12.13",
+    "electron": "^11.2.3",
     "electron-builder": "^22.9.1",
-    "electron-icon-builder": "^2.0.1",
-    "node-loader": "^1.0.1",
-    "style-loader": "^1.2.1",
-    "url-loader": "^4.1.1"
+    "electron-webpack": "^2.8.2",
+    "node-sass": "^5.0.0",
+    "sass-loader": "^10.0.1",
+    "webpack": "^4.42.1"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
     "leaflet": "^1.7.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-leaflet": "^3.1.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "source-map-support": "^0.5.19"
+  },
+  "electronWebpack": {
+    "title": "Aeromap",
+    "main": {
+      "sourceDirectory": "app/main"
+    },
+    "renderer": {
+      "sourceDirectory": "app/renderer",
+      "template": "app/renderer/index.html",
+      "webpackConfig": "webpack.renderer.additions.js"
+    },
+    "commonSourceDirectory": "app/common",
+    "staticSourceDirectory": "app/static"
   }
 }

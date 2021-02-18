@@ -1,15 +1,19 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
 import { useEffect, useState } from 'react';
-import {HashRouter, Link, Route, Switch} from "react-router-dom";
+import { HashRouter, Link, Route, Switch } from "react-router-dom";
 
 import { ipcRenderer } from "electron";
+
+import './index.scss';
+import 'leaflet/dist/leaflet.css';
 
 import Map from './components/Map'
 import Settings from './components/Settings'
 import AerowinxStore from './contexts/AerowinxContext';
 
-function App(props) {
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+
+export default function App(props) {
 
   const [connected, setConnected] = useState(false)
 
@@ -28,8 +32,6 @@ function App(props) {
     <AerowinxStore>
       <HashRouter>
         <div>
-          {/* A <Switch> looks through its children <Route>s and
-              renders the first one that matches the current URL. */}
           <Switch>
             <Route exact path="/settings">
               <Settings connected={connected} />
@@ -59,4 +61,4 @@ function App(props) {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+

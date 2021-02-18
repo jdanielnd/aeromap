@@ -1,9 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+import { app, BrowserWindow } from 'electron';
+import path from 'path';
+import { connectAerowinx } from 'common/aerowinx';
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-  app.quit();
-}
+// get environment type
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const createWindow = () => {
   // Create the browser window.
@@ -15,8 +15,12 @@ const createWindow = () => {
     }
   });
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  // load HTML file
+  if( isDevelopment ) {
+    mainWindow.loadURL( `http://${ process.env.ELECTRON_WEBPACK_WDS_HOST }:${ process.env.ELECTRON_WEBPACK_WDS_PORT }` );
+  } else {
+    mainWindow.loadFile( path.resolve( __dirname, 'index.html' ) );
+  }
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
@@ -44,9 +48,7 @@ app.on('activate', () => {
   }
 });
 
-
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-require('./aerowinx.js')
+connectAerowinx();

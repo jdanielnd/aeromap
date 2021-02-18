@@ -26,7 +26,11 @@
  * ```
  */
 
-import './index.css';
-import 'leaflet/dist/leaflet.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import './App.jsx';
+import App from './App.js';
+// import Entry from './entry';
+
+ReactDOM.render(<App />, document.getElementById('app'));
+// ReactDOM.render(<Entry name="React" />, document.getElementById('app'));
