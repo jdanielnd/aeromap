@@ -51,20 +51,11 @@ export const connectAerowinx = () => {
   socket.on('error',   errorEventHandler);
   socket.on('close',   closeEventHandler);
 
-  // Connect
-  console.log('Connecting to ' + host + ':' + port + '...');
-  makeConnection();
-
-  ipcMain.on('ip-address', (event, arg) => {
-    if(host != arg) {
-      host = arg
-      socket.destroy();
-    }
-  })
-
   socket.on('data', function(data) {
-    if(/^Qs121/.test(data.toString())) {
-      let str = ''+data
+    const Qs121 = /(Qs121=.+)\n/
+
+    if(Qs121.test(data.toString())) {
+      let str = data.toString().match(Qs121)[0]
       let dataSplit = str.split(";");
       let hdg = +dataSplit[2] * 180 / Math.PI
       let lat = +dataSplit[5] * 180 / Math.PI
@@ -79,6 +70,13 @@ export const connectAerowinx = () => {
     }
   });
 
+  ipcMain.on('ip-address', (event, arg) => {
+    if(host != arg) {
+      host = arg
+      socket.destroy();
+    }
+  })
+
   ipcMain.on('position', (event, arg) => {
     event.reply('position-reply', {
       lat: position.lat,
@@ -90,4 +88,8 @@ export const connectAerowinx = () => {
   ipcMain.on('connection', (event, arg) => {
     event.reply('connection-reply', connected)
   })
+
+  // Connect
+  console.log('Connecting to ' + host + ':' + port + '...');
+  makeConnection();
 }
