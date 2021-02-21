@@ -12,6 +12,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### Fixed
 
+## [0.2.0] - 2021-02-21
+   
+### Added
+
+- Allows window to be always on top. This is useful because people can interact with PSX windows on fullscreen without getting Aeromap window hidden.
+ 
+### Changed
+ 
+### Fixed
+
 ## [0.1.2] - 2021-02-18
    
 ### Added

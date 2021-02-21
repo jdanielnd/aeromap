@@ -3,7 +3,8 @@ import AerowinxReducer from '../reducers/AerowinxReducer'
 
 const initialState = {
     address: "127.0.0.1",
-    position: { lat: 10, lng: 10, hdg: 0 }
+    position: { lat: 10, lng: 10, hdg: 0 },
+    alwaysOnTop: true
 };
 
 const AerowinxStore = ({children}) => {
