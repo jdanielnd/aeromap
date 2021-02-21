@@ -11,7 +11,6 @@ const AerowinxReducer = (state, action) => {
         position: action.payload
       };  
     case 'SET_ALWAYS_ON_TOP':
-      console.log(action.payload)
       return {
         ...state,
         alwaysOnTop: action.payload
