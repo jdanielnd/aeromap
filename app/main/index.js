@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import { ipcMain } from 'electron'
 import { connectAerowinx } from 'common/aerowinx';
 
 // get environment type
@@ -12,7 +13,8 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    alwaysOnTop: true
   });
 
   // load HTML file
@@ -21,6 +23,10 @@ const createWindow = () => {
   } else {
     mainWindow.loadFile( path.resolve( __dirname, 'index.html' ) );
   }
+
+  ipcMain.on('always-on-top', (event, arg) => {
+    mainWindow.setAlwaysOnTop(arg)
+  })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
