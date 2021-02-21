@@ -25,7 +25,7 @@ const createWindow = () => {
   }
 
   ipcMain.on('always-on-top', (event, arg) => {
-    mainWindow.setAlwaysOnTop(arg)
+    mainWindow.setAlwaysOnTop(arg, 'normal')
   })
 
   // Open the DevTools.
