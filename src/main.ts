@@ -1,17 +1,22 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import { connectAerowinx } from './lib/aerowinx';
+import { windowStateKeeper } from './lib/window-size';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = () => {
+const createWindow = async () => {
+  const mainWindowStateKeeper = await windowStateKeeper('main');
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    x: mainWindowStateKeeper.x,
+    y: mainWindowStateKeeper.y,
+    width: mainWindowStateKeeper.width,
+    height: mainWindowStateKeeper.height,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -26,6 +31,7 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+  mainWindowStateKeeper.track(mainWindow);
 };
 
 // This method will be called when Electron has finished
