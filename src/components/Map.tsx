@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import Map, { Marker, ViewState } from 'react-map-gl/maplibre';
-
+import Map, { Marker, ScaleControl, NavigationControl, FullscreenControl, ViewState } from 'react-map-gl/maplibre';
+import { Button } from 'flowbite-react';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { getMapStyle } from '../lib/map-styles';
+
+import { MAP_STYLES, getMapStyle } from '../lib/map-styles';
 import { Heading } from './Heading';
 
 type AeromapViewState = {
@@ -30,16 +31,16 @@ export default function AeroMap({ viewState, setViewState, defaultZoom }: { view
       style={{ height: '100vh', width: '100vw' }}
       mapStyle={getMapStyle(mapStyle)}
     >
-      <nav>
-        <ul>
-          <li>
-            <button onClick={() => setMapStyle('openstreetmap')}>OpenStreetMap</button>
-          </li>
-          <li>
-            <button onClick={() => setMapStyle('satellite')}>Satellite</button>
-          </li>
-        </ul>
+      <nav className="absolute top-4 left-4">
+        <Button.Group>
+          {MAP_STYLES.map(({ name, label }) => (
+            <Button className="focus:ring-0" color="gray" onClick={() => setMapStyle(name)} key={name}>{label}</Button>
+          ))}
+        </Button.Group>
       </nav>
+      <NavigationControl showCompass={false} />
+      <ScaleControl />
+      <FullscreenControl />
       <Marker {...viewState} anchor="bottom">
         <Heading />
       </Marker>
