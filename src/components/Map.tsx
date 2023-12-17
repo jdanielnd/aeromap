@@ -1,20 +1,27 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
+import { useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import { LatLngExpression } from 'leaflet';
+import Marker from './Marker';
 
-export default function Map() {
+function ChangeView({ center, zoom }: { center: LatLngExpression, zoom: number}): null {
+  const map = useMap();
+  map.setView(center, map.getZoom());
+  return null;
+}
+
+export default function Map({ position, heading }: { position: [number, number], heading: number}) {
+
   return (
     <div className='map-container'>
-      <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+      <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+        <ChangeView center={position} zoom={13} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[51.505, -0.09]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
+        <Marker position={position} heading={heading} />
       </MapContainer>
     </div>
-  );
+  )
 }
