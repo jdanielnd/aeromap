@@ -100,6 +100,7 @@ export const connectAerowinx = () => {
   })
 
   ipcMain.handle('position:get', async () => position)
+  ipcMain.handle('connection:get', async () => connected)
 
   ipcMain.on('connection', (event, arg) => {
     event.reply('connection-reply', connected)

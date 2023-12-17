@@ -6,6 +6,7 @@ declare global {
       connect: () => void,
       setConnected: (setConnected: Function) => void,
       getPosition: () => Promise<Position>,
-    };
+      getConnection: () => Promise<boolean>,
+    },
   }
 }
