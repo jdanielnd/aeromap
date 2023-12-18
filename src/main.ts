@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
-import { connectAerowinx } from './lib/aerowinx';
+// import { connectAerowinx } from './lib/aerowinx';
+import AerowinxConnection, { createAerowinxConnection } from './lib/aerowinx-connection';
 import { windowStateKeeper } from './lib/window-size';
 import { alwaysOnTopStateKeeper } from './lib/always-on-top';
 import { hostSettings } from './lib/host-settings';
@@ -64,7 +65,9 @@ const createWindow = async () => {
   }
   ipcMain.on('port:set', setPort);
 
-  mainWindow.on('close', function(e){
+  createAerowinxConnection(mainWindow);
+
+  mainWindow.on('close', function (e) {
     ipcMain.removeHandler('always-on-top:get');
     ipcMain.removeListener('always-on-top:set', setAlwaysOnTop);
     ipcMain.removeHandler('host:get');
@@ -72,13 +75,16 @@ const createWindow = async () => {
     ipcMain.removeHandler('port:get');
     ipcMain.removeListener('port:set', setPort);
   });
+
+  return mainWindow;
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', () => {
-  connectAerowinx();
+let aerowinxSocket: AerowinxConnection;
+
+app.on('ready', async () => {
   createWindow();
 });
 
@@ -101,3 +107,4 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+

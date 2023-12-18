@@ -2,8 +2,21 @@ import { useState, useEffect } from 'react'
 
 import Map from './components/Map'
 
+type Qs121 = {
+  pitch: number,
+  bank: number,
+  heading: number,
+  altitude: number,
+  tas: number,
+  lat: number,
+  lon: number
+};
+
 export default function App() {
+  const [host, setHost] = useState('127.0.0.1')
+  const [port, setPort] = useState(10747)
   const [connected, setConnected] = useState(false)
+  const [connecting, setConnecting] = useState(false)
   const [viewState, setViewState] = useState({
     bearing: 0,
     longitude: 0.051536548427520756,
@@ -11,29 +24,69 @@ export default function App() {
   });
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      const currectConnected = () => connected;
-      if (!currectConnected) return
-      const pos = await window.api.getPosition()
-      setViewState({...viewState, longitude: pos.lng, latitude: pos.lat, bearing: pos.hdg})
-    }, 250);
-    return () => clearInterval(interval);
-  }, []);
+    window.aerowinxApi.onConnected(() => {
+      console.log('Connected to Aerowinx');
+      setConnected(true);
+      setConnecting(false);
+    });
 
-  useEffect(() => {
-    const currectConnected = () => connected;
-    const interval = setInterval(async () => {
-      if (currectConnected) return
-      const connection = await window.api.getConnection()
-      setConnected(connection)
-    }, 1000);
+    window.aerowinxApi.onClosed(() => {
+      console.log('Disconnected from Aerowinx');
+      setConnected(false);
+      setConnecting(false);
+    });
 
-    return () => clearInterval(interval);
-  }, []);
+    window.aerowinxApi.onError((error: string) => {
+      console.error(error);
+      setConnected(false);
+      setConnecting(false);
+    });
+
+    window.aerowinxApi.onTimeout(() => {
+      console.error('Connection to Aerowinx timed out');
+      setConnected(false);
+      setConnecting(false);
+    });
+
+    window.aerowinxApi.onQs121((data: Qs121) => {
+      if(Object.values(data).some(v => Number.isNaN(v))) return;
+      setViewState({...viewState, longitude: data.lon, latitude: data.lat, bearing: data.heading})
+    });
+    
+    connectAerowinx();
+
+    return () => {
+      window.aerowinxApi.removeListeners();
+    }
+
+  }, [])
+
+  const connectAerowinx = () => {
+    window.aerowinxApi.connect({host, port})
+    setConnecting(true);
+  }
+
+  const disconnectAerowinx = () => {
+    window.aerowinxApi.close();
+    setConnecting(false);
+  }
 
   return (
     <>
-      <Map viewState={viewState} setViewState={setViewState} defaultZoom={17} />
+      <Map
+        viewState={viewState}
+        setViewState={setViewState}
+        defaultZoom={17}
+        host={host}
+        port={port}
+        setHost={setHost}
+        setPort={setPort}
+        connecting={connecting}
+        setConnecting={setConnecting}
+        connected={connected}
+        connectAerowinx={connectAerowinx}
+        disconnectAerowinx={disconnectAerowinx}
+        />
     </>
   )
 }

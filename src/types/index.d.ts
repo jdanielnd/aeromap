@@ -1,4 +1,4 @@
-export {};
+export { };
 
 declare global {
   interface Window {
@@ -13,6 +13,19 @@ declare global {
       setHost: (host: string) => void,
       getPort: () => Promise<string>,
       setPort: (port: string) => void,
+    },
+    aerowinxApi: {
+      connect: ({ host: string, port: number }) => void,
+      close: () => void,
+      onConnected: (callback: Function) => void,
+      onReady: (callback: Function) => void,
+      onData: (callback: Function) => void,
+      onQs121: (callback: Function) => void,
+      onClosed: (callback: Function) => void,
+      onError: (callback: Function) => void,
+      onTimeout: (callback: Function) => void,
+      setAutoConnect: (autoConnect: boolean) => void,
+      removeListeners: () => void,
     },
   }
 }

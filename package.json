@@ -39,6 +39,7 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
+    "@foxglove/electron-socket": "^2.1.1",
     "electron-settings": "^4.0.2",
     "electron-squirrel-startup": "^1.0.0",
     "flowbite": "^2.2.1",
