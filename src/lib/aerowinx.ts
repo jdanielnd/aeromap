@@ -10,11 +10,19 @@ interface Position {
 export const connectAerowinx = () => {
   const position: Position = { lat: 0, hdg: 0, lng: 0 };
   let host = '127.0.0.1';
-  const port = 10747;
+  let port = 10747;
   const timeout = 1000;
 
   let retrying = false;
   let connected = false;
+
+  ipcMain.on('host:set', (event, arg) => {
+    host = arg
+  });
+
+  ipcMain.on('port:set', (event, arg) => {
+    port = arg
+  });
 
   const socket = new net.Socket();
 

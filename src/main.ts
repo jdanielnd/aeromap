@@ -2,6 +2,8 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import { connectAerowinx } from './lib/aerowinx';
 import { windowStateKeeper } from './lib/window-size';
+import { alwaysOnTopStateKeeper } from './lib/always-on-top';
+import { hostSettings } from './lib/host-settings';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -10,6 +12,8 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = async () => {
   const mainWindowStateKeeper = await windowStateKeeper('main');
+  const mainAlwaysOnTopStateKeeper = await alwaysOnTopStateKeeper('main');
+  const mainHostSettings = await hostSettings();
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -17,6 +21,7 @@ const createWindow = async () => {
     y: mainWindowStateKeeper.y,
     width: mainWindowStateKeeper.width,
     height: mainWindowStateKeeper.height,
+    alwaysOnTop: mainAlwaysOnTopStateKeeper.alwaysOnTopState,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -32,6 +37,41 @@ const createWindow = async () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
   mainWindowStateKeeper.track(mainWindow);
+
+  const setAlwaysOnTop = (event: any, state: boolean) => {
+    mainAlwaysOnTopStateKeeper.setAlwaysOnTopState(state);
+    mainWindow.setAlwaysOnTop(state);
+  }
+
+  ipcMain.on('always-on-top:set', setAlwaysOnTop);
+  ipcMain.handle('always-on-top:get', async () => {
+    return mainAlwaysOnTopStateKeeper.alwaysOnTopState;
+  });
+
+  ipcMain.handle('host:get', async () => {
+    return mainHostSettings.host;
+  });
+  ipcMain.handle('port:get', async () => {
+    return mainHostSettings.port;
+  });
+
+  const setHost = (event: any, arg: string) => {
+    mainHostSettings.setHost(arg);
+  }
+  ipcMain.on('host:set', setHost);
+  const setPort = (event: any, arg: string) => {
+    mainHostSettings.setPort(arg);
+  }
+  ipcMain.on('port:set', setPort);
+
+  mainWindow.on('close', function(e){
+    ipcMain.removeHandler('always-on-top:get');
+    ipcMain.removeListener('always-on-top:set', setAlwaysOnTop);
+    ipcMain.removeHandler('host:get');
+    ipcMain.removeListener('host:set', setHost);
+    ipcMain.removeHandler('port:get');
+    ipcMain.removeListener('port:set', setPort);
+  });
 };
 
 // This method will be called when Electron has finished

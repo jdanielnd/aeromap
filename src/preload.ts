@@ -12,4 +12,10 @@ contextBridge.exposeInMainWorld('api', {
   },
   getPosition: () => ipcRenderer.invoke('position:get'),
   getConnection: () => ipcRenderer.invoke('connection:get'),
+  setAlwaysOnTop: (alwaysOnTop: boolean) => ipcRenderer.send('always-on-top:set', alwaysOnTop),
+  getAlwaysOnTop: () => ipcRenderer.invoke('always-on-top:get'),
+  getHost: () => ipcRenderer.invoke('host:get'),
+  setHost: (host: string) => ipcRenderer.send('host:set', host),
+  getPort: () => ipcRenderer.invoke('port:get'),
+  setPort: (port: string) => ipcRenderer.send('port:set', port),
 })

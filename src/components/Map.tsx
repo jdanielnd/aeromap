@@ -5,6 +5,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { MAP_STYLES, getMapStyle } from '../lib/map-styles';
 import { Heading } from './Heading';
+import { Settings } from './Settings';
 
 type AeromapViewState = {
   bearing: number;
@@ -15,7 +16,7 @@ type AeromapViewState = {
 export default function AeroMap({ viewState, setViewState, defaultZoom }: { viewState: AeromapViewState, setViewState: Function, defaultZoom: number }) {
   const [mapStyle, setMapStyle] = useState('openstreetmap');
   const [zoom, setZoom] = useState(defaultZoom);
-
+  
   return (
     <Map
       {...viewState}
@@ -37,6 +38,7 @@ export default function AeroMap({ viewState, setViewState, defaultZoom }: { view
             <Button className="focus:ring-0" color="gray" onClick={() => setMapStyle(name)} key={name}>{label}</Button>
           ))}
         </Button.Group>
+        <Settings />
       </nav>
       <NavigationControl showCompass={false} />
       <ScaleControl />
