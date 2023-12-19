@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain } from 'electron';
+import { BrowserWindow, IpcMainEvent, app, ipcMain } from 'electron';
 import * as net from 'net';
 
 const DEFAULT_HOST = '127.0.0.1';
@@ -15,7 +15,7 @@ class AerowinxConnection {
   logAllEvents: boolean;
   autoConnect: boolean;
 
-  constructor(win: BrowserWindow, logAllEvents: boolean = false) {
+  constructor(win: BrowserWindow, logAllEvents = false) {
     this.host = DEFAULT_HOST;
     this.port = DEFAULT_PORT;
     this.client = new net.Socket();
@@ -25,7 +25,7 @@ class AerowinxConnection {
     this.setupListeners();
   }
 
-  connect(host: string = this.host, port: number = this.port, resetReconnectAttempts: boolean = false) {
+  connect(host: string = this.host, port: number = this.port, resetReconnectAttempts = false) {
     this.host = host;
     this.port = port;
     if(resetReconnectAttempts) {
@@ -125,7 +125,7 @@ function toDegrees(radians: number) {
 const createAerowinxConnection = (win: BrowserWindow) => {
   let aerowinxSocket = new AerowinxConnection(win);
 
-  const connectListener = (event: any, { host, port }: { host: string, port: number }) => {
+  const connectListener = (event: IpcMainEvent, { host, port }: { host: string, port: number }) => {
     console.log(`Trying to connect to Aerowinx at ${host}:${port}`);
     aerowinxSocket.connect(host, port, true);
   }
@@ -136,7 +136,7 @@ const createAerowinxConnection = (win: BrowserWindow) => {
   }
   ipcMain.on('aerowinx:close', closeListener);
 
-  ipcMain.on('aerowinx:autoconnect', (event: any, autoConnect: boolean) => {
+  ipcMain.on('aerowinx:autoconnect', (event: IpcMainEvent, autoConnect: boolean) => {
     aerowinxSocket.autoConnect = autoConnect;
     console.log("autoConnect: ", autoConnect)
   });
@@ -154,7 +154,7 @@ const createAerowinxConnection = (win: BrowserWindow) => {
     ipcMain.off('aerowinx:close', closeListener);
   }
 
-  win.on('close', () => {
+  win.on('closed', () => {
     clearSocket();
     clearIpcListeners();
   });

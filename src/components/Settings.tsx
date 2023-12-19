@@ -1,26 +1,23 @@
 
 import { Button, Modal, ToggleSwitch, Label, TextInput, FooterDivider } from 'flowbite-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-export function Settings({ host, port, setHost, setPort, connecting, setConnecting, connected, connectAerowinx, disconnectAerowinx }:
-  { host: string, port: number, setHost: Function, setPort: Function, connecting: boolean, setConnecting: Function, connected: boolean, connectAerowinx: Function, disconnectAerowinx: Function }) {
+export function Settings(
+  { host, port, setHost, setPort, connecting, connected, connectAerowinx, disconnectAerowinx }:
+  {
+    host: string,
+    port: number,
+    setHost: (host: React.SetStateAction<string>) => void,
+    setPort: (port: React.SetStateAction<number>) => void
+    connecting: boolean,
+    setConnecting: (isConnecting: boolean) => void,
+    connected: boolean,
+    connectAerowinx: () => void,
+    disconnectAerowinx: () => void
+  }) {
   const [openModal, setOpenModal] = useState(false);
   const [alwaysOnTop, setAlwaysOnTop] = useState(false);
   const [autoConnect, setAutoConnect] = useState(true);
-
-  // useEffect(() => {
-  //   const getSettings = async () => {
-  //     const currentAlwaysOnTop = await window.api.getAlwaysOnTop()
-  //     setAlwaysOnTop(currentAlwaysOnTop)
-
-  //     const currentHost = await window.api.getHost()
-  //     setHost(currentHost)
-
-  //     const currentPort = await window.api.getPort()
-  //     setPort(currentPort)
-  //   }
-  //   getSettings();
-  // }, []);
 
   const onChangeAlwaysOnTop = () => {
     const nextAlwaysOnTop = !alwaysOnTop;
@@ -34,7 +31,7 @@ export function Settings({ host, port, setHost, setPort, connecting, setConnecti
   }
 
   const onChangePort = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const nextPort = event.target.value;
+    const nextPort = Number(event.target.value);
     setPort(nextPort);
   }
 

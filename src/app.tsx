@@ -37,13 +37,13 @@ export default function App() {
     });
 
     window.aerowinxApi.onError((error: string) => {
-      console.error(error);
+      console.info('Error connecting to Aerowinx: ', error)
       setConnected(false);
       setConnecting(false);
     });
 
     window.aerowinxApi.onTimeout(() => {
-      console.error('Connection to Aerowinx timed out');
+      console.info('Connection to Aerowinx timed out');
       setConnected(false);
       setConnecting(false);
     });

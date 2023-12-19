@@ -1,7 +1,7 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
 import path from 'path';
 // import { connectAerowinx } from './lib/aerowinx';
-import AerowinxConnection, { createAerowinxConnection } from './lib/aerowinx-connection';
+import { createAerowinxConnection } from './lib/aerowinx-connection';
 import { windowStateKeeper } from './lib/window-size';
 import { alwaysOnTopStateKeeper } from './lib/always-on-top';
 import { hostSettings } from './lib/host-settings';
@@ -39,7 +39,7 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools();
   mainWindowStateKeeper.track(mainWindow);
 
-  const setAlwaysOnTop = (event: any, state: boolean) => {
+  const setAlwaysOnTop = (event: IpcMainEvent, state: boolean) => {
     mainAlwaysOnTopStateKeeper.setAlwaysOnTopState(state);
     mainWindow.setAlwaysOnTop(state);
   }
@@ -56,18 +56,18 @@ const createWindow = async () => {
     return mainHostSettings.port;
   });
 
-  const setHost = (event: any, arg: string) => {
+  const setHost = (event: IpcMainEvent, arg: string) => {
     mainHostSettings.setHost(arg);
   }
   ipcMain.on('host:set', setHost);
-  const setPort = (event: any, arg: string) => {
+  const setPort = (event: IpcMainEvent, arg: string) => {
     mainHostSettings.setPort(arg);
   }
   ipcMain.on('port:set', setPort);
 
   createAerowinxConnection(mainWindow);
 
-  mainWindow.on('close', function (e) {
+  mainWindow.on('close', function () {
     ipcMain.removeHandler('always-on-top:get');
     ipcMain.removeListener('always-on-top:set', setAlwaysOnTop);
     ipcMain.removeHandler('host:get');
@@ -82,8 +82,6 @@ const createWindow = async () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-let aerowinxSocket: AerowinxConnection;
-
 app.on('ready', async () => {
   createWindow();
 });

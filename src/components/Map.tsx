@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Map, { Marker, ScaleControl, NavigationControl, FullscreenControl, ViewState } from 'react-map-gl/maplibre';
+import { Map, Marker, ScaleControl, NavigationControl, FullscreenControl, ViewState } from 'react-map-gl/maplibre';
 import { Button } from 'flowbite-react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -17,17 +17,17 @@ export default function AeroMap(
   { viewState, setViewState, defaultZoom, host, port, setHost, setPort, connecting, setConnecting, connected, connectAerowinx, disconnectAerowinx }:
   { 
     viewState: AeromapViewState,
-    setViewState: Function,
+    setViewState: (viewState: React.SetStateAction<AeromapViewState>) => void,
     defaultZoom: number,
     host: string,
     port: number,
-    setHost: Function,
-    setPort: Function,
+    setHost: (host: React.SetStateAction<string>) => void,
+    setPort: (port: React.SetStateAction<number>) => void,
     connecting: boolean,
-    setConnecting: Function,
+    setConnecting: (isConnecting: React.SetStateAction<boolean>) => void,
     connected: boolean,
-    connectAerowinx: Function,
-    disconnectAerowinx: Function
+    connectAerowinx: () => void,
+    disconnectAerowinx: () => void
   }
 ) {
   const [mapStyle, setMapStyle] = useState('openstreetmap');
