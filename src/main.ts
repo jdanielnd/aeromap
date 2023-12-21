@@ -40,7 +40,7 @@ const createWindow = async () => {
 
   const setAlwaysOnTop = (event: IpcMainEvent, state: boolean) => {
     mainAlwaysOnTopStateKeeper.setAlwaysOnTopState(state);
-    mainWindow.setAlwaysOnTop(state);
+    mainWindow.setAlwaysOnTop(state, 'normal');
   }
 
   ipcMain.on('always-on-top:set', setAlwaysOnTop);
