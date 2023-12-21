@@ -25,6 +25,14 @@ export default function App() {
 
 
   useEffect(() => {
+    const getSavedConnection = async () => {
+      const savedHost = await window.api.getHost();
+      if (savedHost) setHost(savedHost);
+      const savedPort = await window.api.getPort();
+      if (savedPort) setPort(savedPort);
+      connectAerowinx();
+    }
+
     window.aerowinxApi.onConnected(() => {
       console.log('Connected to Aerowinx');
       setConnected(true);
@@ -53,8 +61,8 @@ export default function App() {
       if (Object.values(data).some(v => Number.isNaN(v))) return;
       setAircraftPosition({ ...aircraftPosition, longitude: data.lon, latitude: data.lat, bearing: data.heading })
     });
-
-    connectAerowinx();
+    
+    getSavedConnection();
 
     return () => {
       window.aerowinxApi.removeListeners();

@@ -3,6 +3,7 @@ import path from 'path';
 import { createAerowinxConnection } from './lib/aerowinx-connection';
 import { windowStateKeeper } from './lib/window-size';
 import { alwaysOnTopStateKeeper } from './lib/always-on-top';
+import settings from 'electron-settings';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -82,4 +83,15 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-
+ipcMain.handle('host:set', async (event, data) => {
+  await settings.set('host', data);
+});
+ipcMain.handle('host:get', async () => {
+  return await settings.get('host');
+});
+ipcMain.handle('port:set', async (event, data) => {
+  await settings.set('port', data);
+});
+ipcMain.handle('port:get', async () => {
+  return await settings.get('port');
+});
