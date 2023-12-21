@@ -17,11 +17,12 @@ export default function App() {
   const [port, setPort] = useState(10747)
   const [connected, setConnected] = useState(false)
   const [connecting, setConnecting] = useState(false)
-  const [viewState, setViewState] = useState({
+  const [aircraftPosition, setAircraftPosition] = useState({
     bearing: 0,
     longitude: 0.051536548427520756,
     latitude: 51.50527121507392,
   });
+
 
   useEffect(() => {
     window.aerowinxApi.onConnected(() => {
@@ -49,10 +50,10 @@ export default function App() {
     });
 
     window.aerowinxApi.onQs121((data: Qs121) => {
-      if(Object.values(data).some(v => Number.isNaN(v))) return;
-      setViewState({...viewState, longitude: data.lon, latitude: data.lat, bearing: data.heading})
+      if (Object.values(data).some(v => Number.isNaN(v))) return;
+      setAircraftPosition({ ...aircraftPosition, longitude: data.lon, latitude: data.lat, bearing: data.heading })
     });
-    
+
     connectAerowinx();
 
     return () => {
@@ -62,7 +63,7 @@ export default function App() {
   }, [])
 
   const connectAerowinx = () => {
-    window.aerowinxApi.connect({host, port})
+    window.aerowinxApi.connect({ host, port })
     setConnecting(true);
   }
 
@@ -74,8 +75,7 @@ export default function App() {
   return (
     <>
       <Map
-        viewState={viewState}
-        setViewState={setViewState}
+        aircraftPosition={aircraftPosition}
         defaultZoom={17}
         host={host}
         port={port}
@@ -86,7 +86,7 @@ export default function App() {
         connected={connected}
         connectAerowinx={connectAerowinx}
         disconnectAerowinx={disconnectAerowinx}
-        />
+      />
     </>
   )
 }
