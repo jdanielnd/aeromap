@@ -3,7 +3,6 @@ import path from 'path';
 import { createAerowinxConnection } from './lib/aerowinx-connection';
 import { windowStateKeeper } from './lib/window-size';
 import { alwaysOnTopStateKeeper } from './lib/always-on-top';
-import { hostSettings } from './lib/host-settings';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -13,7 +12,6 @@ if (require('electron-squirrel-startup')) {
 const createWindow = async () => {
   const mainWindowStateKeeper = await windowStateKeeper('main');
   const mainAlwaysOnTopStateKeeper = await alwaysOnTopStateKeeper('main');
-  const mainHostSettings = await hostSettings();
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -48,31 +46,11 @@ const createWindow = async () => {
     return mainAlwaysOnTopStateKeeper.alwaysOnTopState;
   });
 
-  ipcMain.handle('host:get', async () => {
-    return mainHostSettings.host;
-  });
-  ipcMain.handle('port:get', async () => {
-    return mainHostSettings.port;
-  });
-
-  const setHost = (event: IpcMainEvent, arg: string) => {
-    mainHostSettings.setHost(arg);
-  }
-  ipcMain.on('host:set', setHost);
-  const setPort = (event: IpcMainEvent, arg: string) => {
-    mainHostSettings.setPort(arg);
-  }
-  ipcMain.on('port:set', setPort);
-
   createAerowinxConnection(mainWindow);
 
   mainWindow.on('close', function () {
     ipcMain.removeHandler('always-on-top:get');
     ipcMain.removeListener('always-on-top:set', setAlwaysOnTop);
-    ipcMain.removeHandler('host:get');
-    ipcMain.removeListener('host:set', setHost);
-    ipcMain.removeHandler('port:get');
-    ipcMain.removeListener('port:set', setPort);
   });
 
   return mainWindow;
