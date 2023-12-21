@@ -19,6 +19,11 @@ jobs:
         with:
           node-version: 'latest'
 
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
       - name: Build/release Electron app
         run: |
           npm install
