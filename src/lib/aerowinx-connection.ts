@@ -87,7 +87,7 @@ class AerowinxConnection {
   }
 
   close() {
-    this.client.end();
+    this.client.resetAndDestroy();
     console.log('Connection manually closed');
   }
 
@@ -136,7 +136,7 @@ const createAerowinxConnection = (win: BrowserWindow) => {
   ipcMain.on('aerowinx:connect', connectListener);
 
   const closeListener = () => {
-    aerowinxSocket.destroy();
+    aerowinxSocket.close();
   }
   ipcMain.on('aerowinx:close', closeListener);
 
