@@ -6,6 +6,10 @@ import { contextBridge, ipcRenderer } from 'electron';
 contextBridge.exposeInMainWorld('api', {
   setAlwaysOnTop: (alwaysOnTop: boolean) => ipcRenderer.send('always-on-top:set', alwaysOnTop),
   getAlwaysOnTop: () => ipcRenderer.invoke('always-on-top:get'),
+  setHost: (host: string) => ipcRenderer.invoke('host:set', host),
+  getHost: async (): Promise<string> => ipcRenderer.invoke('host:get'),
+  setPort: (port: number) => ipcRenderer.invoke('port:set', port),
+  getPort: async (): Promise<number> => ipcRenderer.invoke('port:get'),
 })
 
 contextBridge.exposeInMainWorld('aerowinxApi', {

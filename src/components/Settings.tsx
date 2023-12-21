@@ -28,11 +28,13 @@ export function Settings(
   const onChangeHost = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextHost = event.target.value;
     setHost(nextHost);
+    window.api.setHost(nextHost);
   }
 
   const onChangePort = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextPort = Number(event.target.value);
     setPort(nextPort);
+    window.api.setPort(nextPort);
   }
 
   const onChangeAutoConnect = () => {

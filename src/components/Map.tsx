@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Map, Marker, ScaleControl, NavigationControl, FullscreenControl, ViewState } from 'react-map-gl/maplibre';
 import { Button } from 'flowbite-react';
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -14,30 +14,42 @@ type AeromapViewState = {
 }
 
 export default function AeroMap(
-  { viewState, setViewState, defaultZoom, host, port, setHost, setPort, connecting, setConnecting, connected, connectAerowinx, disconnectAerowinx }:
-  { 
-    viewState: AeromapViewState,
-    setViewState: (viewState: React.SetStateAction<AeromapViewState>) => void,
-    defaultZoom: number,
-    host: string,
-    port: number,
-    setHost: (host: React.SetStateAction<string>) => void,
-    setPort: (port: React.SetStateAction<number>) => void,
-    connecting: boolean,
-    setConnecting: (isConnecting: React.SetStateAction<boolean>) => void,
-    connected: boolean,
-    connectAerowinx: () => void,
-    disconnectAerowinx: () => void
-  }
+  { aircraftPosition, defaultZoom, host, port, setHost, setPort, connecting, setConnecting, connected, connectAerowinx, disconnectAerowinx }:
+    {
+      aircraftPosition: AeromapViewState,
+      defaultZoom: number,
+      host: string,
+      port: number,
+      setHost: (host: React.SetStateAction<string>) => void,
+      setPort: (port: React.SetStateAction<number>) => void,
+      connecting: boolean,
+      setConnecting: (isConnecting: React.SetStateAction<boolean>) => void,
+      connected: boolean,
+      connectAerowinx: () => void,
+      disconnectAerowinx: () => void
+    }
 ) {
   const [mapStyle, setMapStyle] = useState('openstreetmap');
+  const [viewState, setViewState] = useState(aircraftPosition);
   const [zoom, setZoom] = useState(defaultZoom);
+  const [userControl, setUserControl] = useState(false);
+
+  useEffect(() => {
+    if (userControl) return;
+    setViewState(aircraftPosition);
+  }, [aircraftPosition]);
+
+  function backToCenter() {
+    setViewState(aircraftPosition);
+    setUserControl(false);
+  }
 
   return (
     <Map
       {...viewState}
       zoom={zoom}
       onMove={evt => {
+        setUserControl(true);
         setViewState((prevState: ViewState) => ({
           ...prevState,
           longitude: evt.viewState.longitude,
@@ -65,11 +77,14 @@ export default function AeroMap(
           connectAerowinx={connectAerowinx}
           disconnectAerowinx={disconnectAerowinx}
         />
+        {userControl && (
+          <Button className="focus:ring-0" color="gray" onClick={backToCenter}>Back to center</Button>
+        )}
       </nav>
       <NavigationControl showCompass={false} />
       <ScaleControl />
       <FullscreenControl />
-      <Marker {...viewState} anchor="bottom">
+      <Marker {...aircraftPosition} anchor="bottom">
         <Heading />
       </Marker>
     </Map>

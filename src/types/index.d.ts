@@ -5,6 +5,10 @@ declare global {
     api: {
       setAlwaysOnTop: (alwaysOnTop: boolean) => void,
       getAlwaysOnTop: () => Promise<boolean>,
+      setHost: (host: string) => void,
+      getHost: () => Promise<string>,
+      setPort: (port: number) => void,
+      getPort: () => Promise<number>,
     },
     aerowinxApi: {
       connect: ({ host: string, port: number }) => void,
