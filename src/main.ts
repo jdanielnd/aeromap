@@ -1,6 +1,5 @@
 import { app, BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
 import path from 'path';
-// import { connectAerowinx } from './lib/aerowinx';
 import { createAerowinxConnection } from './lib/aerowinx-connection';
 import { windowStateKeeper } from './lib/window-size';
 import { alwaysOnTopStateKeeper } from './lib/always-on-top';
@@ -36,7 +35,7 @@ const createWindow = async () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   mainWindowStateKeeper.track(mainWindow);
 
   const setAlwaysOnTop = (event: IpcMainEvent, state: boolean) => {

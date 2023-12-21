@@ -92,7 +92,11 @@ class AerowinxConnection {
   }
 
   destroy() {
-    this.client.destroy();
+    this.client.removeAllListeners();
+    this.client.on('error', (error) => { 
+      console.log('Error: ', error); 
+     })
+    this.client.resetAndDestroy();
     console.log('Connection destroyed');
   }
 }
@@ -144,25 +148,13 @@ const createAerowinxConnection = (win: BrowserWindow) => {
   function clearSocket() {
     if (aerowinxSocket) {
       aerowinxSocket.destroy();
-      aerowinxSocket = null;
-      win = null;
     }
-  }
-
-  function clearIpcListeners() {
     ipcMain.off('aerowinx:connect', connectListener);
     ipcMain.off('aerowinx:close', closeListener);
   }
 
-  win.on('closed', () => {
-    clearSocket();
-    clearIpcListeners();
-  });
-
-  app.on('before-quit', () => {
-    clearSocket();
-    clearIpcListeners();
-  });
+  win.on('close', clearSocket);
+  app.on('before-quit', clearSocket);
 }
 
 export default AerowinxConnection;
