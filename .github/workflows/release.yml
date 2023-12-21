@@ -1,0 +1,28 @@
+name: Release
+
+on: push
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
+      - name: Build/release Electron app
+        run: |
+          npm install
+          npm run make
+          npm run publish
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
